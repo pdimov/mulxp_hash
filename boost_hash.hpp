@@ -12,13 +12,13 @@
 
 inline void boost_test( void const * blob, int len, std::uint32_t seed_, void * out )
 {
-	unsigned char const* p = static_cast<unsigned char const*>( blob );
+    unsigned char const* p = static_cast<unsigned char const*>( blob );
 
-	std::size_t seed = seed_;
+    std::size_t seed = seed_;
 
-	boost::hash_range( seed, p, p + len );
+    boost::hash_range( seed, p, p + len );
 
-	*static_cast<std::uint64_t*>( out ) = seed;
+    *static_cast<std::uint64_t*>( out ) = seed;
 }
 
 #endif // #ifndef BOOST_HASH_HPP_INCLUDED
