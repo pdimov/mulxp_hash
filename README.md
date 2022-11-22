@@ -16,8 +16,9 @@ the basis of his hash function [MUM hash](https://github.com/vnmakarov/mum-hash)
 `mulxp0_hash` is closest to `boost::hash<std::string>` from Boost 1.81,
 and uses the same basic `state = combine( state, input );` round, with
 `combine(h, v)` being `h ^ mulx( h + 1 + v, k )`, where `k` is a constant.
-Unlike `boost::hash`, it adds a round of scrambling the initial seed, and
-a round of scrambling the final result. (These are necessary to pass the
+Unlike `boost::hash`, it adds a leading round of scrambling the initial
+seed, and a trailing round of scrambling the final result. (These are
+necessary to pass the
 [SMHasher battery of tests](https://github.com/rurban/smhasher).)
 
 Since this construction makes the next round dependent on the current one,
@@ -52,10 +53,11 @@ started by [FARSH](https://github.com/Bulat-Ziganshin/FARSH), continued with
 primitive, as in `mulx(v1 + k1, v2 + k2)`, where `k1` and `k2` are suitably
 chosen constants that ideally would come from a secret one-time pad.
 
-The advantage of this scheme is that the inner loop performs has one fewer
+The advantage of this scheme is that the inner loop performs one fewer
 multiplication per round, which ideally would double the speed. The
 disadvantage is that if one of the operands to the `mulx` primitive happens
-to be zero, the other input word doesn't matter.
+to be zero, the other input word is essentially discarded and does not affect
+the final hash value.
 
 In `mulxp3_hash`, the round operation is `h ^= mulx( v1 + w, v2 + w + k );`,
 where `w` is a Weyl sequence as above, and `k` is a constant. This makes
