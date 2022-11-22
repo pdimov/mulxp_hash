@@ -49,7 +49,7 @@ inline std::uint64_t mulxp0_hash( unsigned char const * p, std::size_t n, std::u
     std::uint64_t const q = 0x9e3779b97f4a7c15ULL;
     std::uint64_t const k = q * q;
 
-	std::uint64_t const n2 = n;
+    std::uint64_t const n2 = n;
 
     std::uint64_t h = mulx( seed + q, k );
 
@@ -130,7 +130,7 @@ inline std::uint64_t mulxp2_hash( unsigned char const * p, std::size_t n, std::u
     std::uint64_t const q = 0x9e3779b97f4a7c15ULL;
     std::uint64_t const k = q * q;
 
-	std::uint64_t const n2 = n;
+    std::uint64_t const n2 = n;
 
     std::uint64_t w = mulx( seed + q, k );
     std::uint64_t h = w;
