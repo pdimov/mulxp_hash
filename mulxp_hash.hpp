@@ -229,4 +229,60 @@ inline std::uint64_t mulxp3_hash( unsigned char const * p, std::size_t n, std::u
     return mulx( h, k );
 }
 
+// 32 bit
+
+inline std::uint64_t mul32( std::uint32_t x, std::uint32_t y )
+{
+    return (std::uint64_t)x * y;
+}
+
+inline std::uint32_t mulxp3_hash32( unsigned char const * p, std::size_t n, std::uint32_t seed )
+{
+    std::uint32_t const q = 0x9e3779b9U;
+    std::uint32_t const k = q * q;
+
+    std::uint64_t h = mul32( seed + q, k );
+    std::uint32_t w = (std::uint32_t)h;
+
+    h ^= n;
+
+    while( n >= 8 )
+    {
+        std::uint32_t v1 = read32le( p + 0 );
+        std::uint32_t v2 = read32le( p + 4 );
+
+        w += q;
+        h ^= mul32( v1 + w, v2 + w + k );
+
+        p += 8;
+        n -= 8;
+    }
+
+    {
+        std::uint32_t v1 = 0;
+        std::uint32_t v2 = 0;
+
+        if( n >= 4 )
+        {
+            v1 = read32le( p );
+            v2 = ((std::uint64_t)read32le( p + n - 4 ) << ( n - 4 ) * 8) >> 32;
+        }
+        else if( n >= 1 )
+        {
+            std::size_t const x1 = ( n - 1 ) & 2; // 1: 0, 2: 0, 3: 2
+            std::size_t const x2 = n >> 1;        // 1: 0, 2: 1, 3: 1
+
+            v1 = (std::uint32_t)p[ x1 ] << x1 * 8 | (std::uint32_t)p[ x2 ] << x2 * 8 | (std::uint32_t)p[ 0 ];
+        }
+
+        w += q;
+        h ^= mul32( v1 + w, v2 + w + k );
+    }
+
+    w += q;
+    h ^= mul32( (std::uint32_t)h + w, (std::uint32_t)(h >> 32) + w + k );
+
+    return (std::uint32_t)h ^ (std::uint32_t)(h >> 32);
+}
+
 #endif // #ifndef MULXP_HASH_HPP_INCLUDED
