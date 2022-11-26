@@ -229,28 +229,4 @@ inline std::uint64_t mulxp3_hash( unsigned char const * p, std::size_t n, std::u
     return mulx( h, k );
 }
 
-inline void mulxp0_test( void const * blob, int len, std::uint32_t seed, void * out )
-{
-    std::uint64_t h = mulxp0_hash( static_cast<unsigned char const *>( blob ), len, seed );
-    *static_cast<std::uint64_t*>( out ) = h;
-}
-
-inline void mulxp1_test( void const * blob, int len, std::uint32_t seed, void * out )
-{
-    std::uint64_t h = mulxp1_hash( static_cast<unsigned char const *>( blob ), len, seed );
-    *static_cast<std::uint64_t*>( out ) = h;
-}
-
-inline void mulxp2_test( void const * blob, int len, std::uint32_t seed, void * out )
-{
-    std::uint64_t h = mulxp2_hash( static_cast<unsigned char const *>( blob ), len, seed );
-    *static_cast<std::uint64_t*>( out ) = h;
-}
-
-inline void mulxp3_test( void const * blob, int len, std::uint32_t seed, void * out )
-{
-    std::uint64_t h = mulxp3_hash( static_cast<unsigned char const *>( blob ), len, seed );
-    *static_cast<std::uint64_t*>( out ) = h;
-}
-
 #endif // #ifndef MULXP_HASH_HPP_INCLUDED
