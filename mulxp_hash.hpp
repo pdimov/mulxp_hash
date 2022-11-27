@@ -50,9 +50,9 @@ inline std::uint64_t mulx( std::uint64_t x, std::uint64_t y )
 
     std::uint64_t r1 = x1 * y1;
 
-    std::uint64_t r2 = (std::uint32_t)r2a + (std::uint32_t)r2b + (r1 >> 32);
+    std::uint64_t r2 = (r1 >> 32) + (std::uint32_t)r2a + (std::uint32_t)r2b;
 
-    r1 = (std::uint32_t)r1 + (r2 << 32);
+    r1 = (r2 << 32) + (std::uint32_t)r1;
     r3 += r2 >> 32;
 
     return r1 ^ r3;
