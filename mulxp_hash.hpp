@@ -20,6 +20,17 @@ __forceinline std::uint64_t mulx( std::uint64_t x, std::uint64_t y )
     return r ^ r2;
 }
 
+#elif defined(_MSC_VER) && defined(_M_ARM64) && !defined(__clang__)
+
+#include <intrin.h>
+
+__forceinline std::uint64_t mulx( std::uint64_t x, std::uint64_t y )
+{
+    std::uint64_t r = x * y;
+    std::uint64_t r2 = __umulh( x, y );
+    return r ^ r2;
+}
+
 #elif defined(__SIZEOF_INT128__)
 
 inline std::uint64_t mulx( std::uint64_t x, std::uint64_t y )
