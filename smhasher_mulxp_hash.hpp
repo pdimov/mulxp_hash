@@ -34,6 +34,12 @@ inline void smhasher_mulxp3_test( void const * blob, int len, std::uint32_t seed
 
 //
 
+inline void smhasher_mulxp1_test32( void const * blob, int len, std::uint32_t seed, void * out )
+{
+    std::uint32_t h = mulxp1_hash32( static_cast<unsigned char const *>( blob ), len, seed );
+    *static_cast<std::uint32_t*>( out ) = h;
+}
+
 inline void smhasher_mulxp3_test32( void const * blob, int len, std::uint32_t seed, void * out )
 {
     std::uint32_t h = mulxp3_hash32( static_cast<unsigned char const *>( blob ), len, seed );
