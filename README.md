@@ -148,6 +148,62 @@ Testing collisions (low  32-bit) - Expected       1116.2, actual 675267 (605.00x
 Testing collisions (low  25-37 bits) - Worst is 37 bits: 674622/34 (19336.88x) !!!!!
 ```
 
+### mulxp1_hash32
+
+```
+Verification value 0x59CBE0F0 ....... PASS
+
+Average      -  2.425 bytes/cycle - 6937.08 MiB/sec @ 3 ghz
+Average                                    35.108 cycles/hash
+
+Verification value is 0x00000001 - Testing took 1169.231000 seconds
+```
+
+Failures: Permutation, Window
+
+```
+Combination 128-bytes [0-last] Tests:
+Keyset 'Combination' - up to 22 blocks from a set of 2 - 8388606 keys
+Testing collisions ( 32-bit) - Expected 8186.7, actual 4065412 (496.59x) (4057226) !!!!!
+
+Window at  58 - Testing collisions ( 32-bit) - Expected  128.0, actual    375 (2.93x) (248) !!!!!
+Window at  59 - Testing collisions ( 32-bit) - Expected  128.0, actual    687 (5.37x) (560) !!!!!
+Window at  60 - Testing collisions ( 32-bit) - Expected  128.0, actual    612 (4.78x) (485) !!!!!
+Window at  61 - Testing collisions ( 32-bit) - Expected  128.0, actual    869 (6.79x) (742) !!!!!
+Window at  62 - Testing collisions ( 32-bit) - Expected  128.0, actual   1000 (7.81x) (873) !!!!!
+Window at  63 - Testing collisions ( 32-bit) - Expected  128.0, actual   1133 (8.85x) (1006) !!!!!
+Window at  64 - Testing collisions ( 32-bit) - Expected  128.0, actual   1305 (10.20x) (1178) !!!!!
+Window at  65 - Testing collisions ( 32-bit) - Expected  128.0, actual    831 (6.49x) (704) !!!!!
+Window at  66 - Testing collisions ( 32-bit) - Expected  128.0, actual    488 (3.81x) (361) !!!!!
+Window at  67 - Testing collisions ( 32-bit) - Expected  128.0, actual    308 (2.41x) (181) !!!!!
+```
+
+### mulxp3_hash32
+
+```
+Verification value 0x8C944400 ....... PASS
+
+Average      -  3.706 bytes/cycle - 10602.00 MiB/sec @ 3 ghz
+Average                                    32.018 cycles/hash
+
+Verification value is 0x00000001 - Testing took 1157.755000 seconds
+```
+
+No test failures.
+
+### boost_hash_32
+
+```
+Verification value 0xD83303AC ....... PASS
+
+Average      -  0.460 bytes/cycle - 1315.91 MiB/sec @ 3 ghz
+Average                                    64.906 cycles/hash
+
+Verification value is 0x00000001 - Testing took 1301.033000 seconds
+```
+
+Failures: nearly all.
+
 ## Benchmark Results
 
 Results from running the
@@ -155,7 +211,9 @@ Results from running the
 from Boost.ContainerHash, modified to test the `mulxp` family of functions
 in addition to `boost::hash<std::string>` and `absl::Hash<std::string>`.
 
-### GCC 11 -O3
+### 64 bit
+
+#### GCC 11 -O3
 
 ```
          boost::hash: 14990 ms
@@ -166,7 +224,7 @@ in addition to `boost::hash<std::string>` and `absl::Hash<std::string>`.
          mulxp3_hash: 11101 ms
 ```
 
-### clang-cl 15 /O2
+#### clang-cl 15 /O2
 
 ```
          boost::hash: 17352 ms
@@ -177,7 +235,7 @@ in addition to `boost::hash<std::string>` and `absl::Hash<std::string>`.
          mulxp3_hash: 13962 ms
 ```
 
-### VS2022 /O2 /GL
+#### VS2022 /O2 /GL
 
 ```
          boost::hash: 19053 ms
