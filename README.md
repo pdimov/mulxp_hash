@@ -245,3 +245,25 @@ in addition to `boost::hash<std::string>` and `absl::Hash<std::string>`.
          mulxp2_hash: 14072 ms
          mulxp3_hash: 13213 ms
 ```
+
+### 32 bit
+
+#### clang-cl 15 /O2
+
+```
+                   boost::hash: 17056 ms
+                    fnv1a_hash: 16340 ms
+                    absl::Hash: 19995 ms
+                 mulxp1_hash32: 16282 ms
+                 mulxp3_hash32: 16413 ms
+```
+
+#### VS2022 /O2 /GL
+
+```
+                   boost::hash: 18677 ms
+                    fnv1a_hash: 17226 ms
+                    absl::Hash: 20264 ms
+                 mulxp1_hash32: 17201 ms
+                 mulxp3_hash32: 15195 ms
+```
