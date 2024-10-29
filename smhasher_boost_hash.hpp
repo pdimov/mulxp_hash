@@ -37,11 +37,11 @@ inline std::uint32_t smhasher_hash_range_32( std::uint32_t seed, unsigned char c
         // clang 5+, gcc 5+ figure out this pattern and use a single mov on x86
         // gcc on s390x and power BE even knows how to use load-reverse
 
-        boost::uint32_t w =
-            static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
-            static_cast<boost::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
-            static_cast<boost::uint32_t>( static_cast<unsigned char>( first[2] ) ) << 16 |
-            static_cast<boost::uint32_t>( static_cast<unsigned char>( first[3] ) ) << 24;
+        std::uint32_t w =
+            static_cast<std::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
+            static_cast<std::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
+            static_cast<std::uint32_t>( static_cast<unsigned char>( first[2] ) ) << 16 |
+            static_cast<std::uint32_t>( static_cast<unsigned char>( first[3] ) ) << 24;
 
         hash_combine( seed, w );
     }
@@ -50,14 +50,14 @@ inline std::uint32_t smhasher_hash_range_32( std::uint32_t seed, unsigned char c
         // add a trailing suffix byte of 0x01 because otherwise sequences of
         // trailing zeroes are indistinguishable from end of string
 
-        boost::uint32_t w = 0x01u;
+        std::uint32_t w = 0x01u;
 
         switch( n )
         {
         case 1:
 
             w =
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
+                static_cast<std::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
                 0x0100u;
 
             break;
@@ -65,8 +65,8 @@ inline std::uint32_t smhasher_hash_range_32( std::uint32_t seed, unsigned char c
         case 2:
 
             w =
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
+                static_cast<std::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
+                static_cast<std::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
                 0x010000u;
 
             break;
@@ -74,9 +74,9 @@ inline std::uint32_t smhasher_hash_range_32( std::uint32_t seed, unsigned char c
         case 3:
 
             w =
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
-                static_cast<boost::uint32_t>( static_cast<unsigned char>( first[2] ) ) << 16 |
+                static_cast<std::uint32_t>( static_cast<unsigned char>( first[0] ) ) |
+                static_cast<std::uint32_t>( static_cast<unsigned char>( first[1] ) ) <<  8 |
+                static_cast<std::uint32_t>( static_cast<unsigned char>( first[2] ) ) << 16 |
                 0x01000000u;
 
             break;
