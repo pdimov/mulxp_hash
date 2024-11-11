@@ -5,6 +5,7 @@
 #include "mulxp_hash.hpp"
 #include <vector>
 #include <cstdio>
+#include <cinttypes>
 
 // Test vectors for mulxp1_hash
 
@@ -84,7 +85,7 @@ int main()
 
         if( r != e.result )
         {
-            std::fprintf( stderr, "Reference value mismatch for length %zu, seed %016llX: was %016llX, expected %016llX\n", e.length, e.seed, r, e.result );
+            std::fprintf( stderr, "Reference value mismatch for length %zu, seed %016" PRIX64 ": was %016" PRIX64 ", expected %016" PRIX64 "\n", e.length, e.seed, r, e.result );
             ++errors;
         }
     }
