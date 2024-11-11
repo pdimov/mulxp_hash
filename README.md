@@ -1,10 +1,13 @@
 # mulxp_hash
 
-Candidate replacements for use with `boost::unordered_flat_map` from
-Boost 1.81, instead of the default `boost::hash<std::string>`. Might
-be added as a dedicated `boost::string_hash` function object for
-string hashing only, or directly as the implementation underneath
-`boost::hash<std::string>` et al.
+## Description
+
+These hash functions were developed as candidate replacements for
+use with `boost::unordered_flat_map` from Boost 1.81, instead of
+the then-current default `boost::hash<std::string>`.
+
+As of Boost 1.82, the default `boost::hash<std::string>` now uses
+`mulxp1_hash`.
 
 As a basic primitive, the functions use `mulx`, a multiplication of
 two 64 bit numbers yielding a 128 bit result, then combining its two
@@ -63,6 +66,24 @@ In `mulxp3_hash`, the round operation is `h ^= mulx( v1 + w, v2 + w + k );`,
 where `w` is a Weyl sequence as above, and `k` is a constant. This makes
 `mulxp3_hash` approximately 1.5 times as fast as `mulxp2_hash`.
 
+## Which Function Should You Use
+
+If you use a fixed and known seed (e.g. 0), use `mulxp1_hash` in 64 bit code,
+`mulxp1_hash32` in 32 bit code.
+
+If you use a random (or unknown to an attacker) seed, or aren't concerned
+about attacker-induced collisions, use `mulxp3_hash` in 64 bit code,
+`mulxp3_hash32` in 32 bit code.
+
+`mulxp0_hash` and `mulxp2_hash` are only of historical interest and there's
+no reason to prefer them over `mulxp1_hash` and `mulxp3_hash`.
+
+## Test Vectors
+
+Reference values for `mulxp1_hash` and `mulxp3_hash` are available in the
+source files `mulxp1_test.cpp`, `mulxp3_test.cpp`, `mulxp1_32_test.cpp`,
+and `mulxp3_32_test.cpp`.
+
 ## SMHasher Results
 
 Results from running [rurban/smhasher](https://github.com/rurban/smhasher):
@@ -119,7 +140,7 @@ Verification value is 0x00000001 - Testing took 1641.350000 seconds
 
 No test failures.
 
-### boost_hash
+### boost_hash (from Boost 1.81)
 
 ```
 Verification value 0x8766204A ....... PASS
@@ -191,7 +212,7 @@ Verification value is 0x00000001 - Testing took 1157.755000 seconds
 
 No test failures.
 
-### boost_hash_32
+### boost_hash_32 (from Boost 1.81)
 
 ```
 Verification value 0xD83303AC ....... PASS
