@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - develop
+      - feature/**
+
+env:
+  UBSAN_OPTIONS: print_stacktrace=1
+
+jobs:
+
+  posix-cmake-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-13, macos-14, macos-15 ]
+        variant: [ Debug, Release ]
+
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: |
+          mkdir __build__ && cd __build__
+          cmake -DCMAKE_BUILD_TYPE=${{matrix.variant}} ..
+
+      - name: Build tests
+        run: |
+          cmake --build __build__
+
+      - name: Run tests
+        run: |
+          ctest --test-dir __build__ --output-on-failure --no-tests=error
+
+  windows-cmake-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-2019, windows-2022 ]
+
+    runs-on: ${{matrix.os}}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        shell: cmd
+        run: |
+          mkdir __build__ && cd __build__
+          cmake ..
+
+      - name: Build tests (Debug)
+        shell: cmd
+        run: |
+          cmake --build __build__ --config Debug
+
+      - name: Run tests (Debug)
+        shell: cmd
+        run: |
+          ctest --test-dir __build__ --output-on-failure --no-tests=error -C Debug
+
+      - name: Build tests (Release)
+        shell: cmd
+        run: |
+          cmake --build __build__ --config Release
+
+      - name: Run tests (Release)
+        shell: cmd
+        run: |
+          ctest --test-dir __build__ --output-on-failure --no-tests=error -C Release
